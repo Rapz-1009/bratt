@@ -15,19 +15,22 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          # Hapus riwayat git bawaan agar tidak bentrok
+          # 1. Bersihkan riwayat git lama
           rm -rf .git
           
-          # Buat git baru khusus untuk push ke Hugging Face
-          git init
+          # 2. Inisialisasi ulang dengan branch 'main' secara eksplisit
+          git init -b main
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           
-          # Aktifkan Git LFS untuk file biner yang bikin error
+          # 3. Aktifkan Git LFS untuk menangani file gambar/zip (agar tidak ditolak HF)
           git lfs install
           git lfs track "*.png" "*.jpg" "*.jpeg" "*.zip" "*.ttf" "*.mp4"
           
-          # Simpan dan paksa push ke Space kamu
+          # 4. Tambahkan file .gitattributes yang dibuat oleh LFS
+          git add .gitattributes
+          
+          # 5. Commit dan Push paksa ke Hugging Face
           git add .
           git commit -m "Auto-sync via GitHub Actions"
           git push --force https://raffxs:$HF_TOKEN@huggingface.co/spaces/raffxs/brat main
