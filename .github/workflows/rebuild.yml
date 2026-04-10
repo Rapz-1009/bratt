@@ -10,12 +10,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          lfs: true
-          
-      - name: Push to Hugging Face
+
+      - name: Deploy to Hugging Face with LFS
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
+          # Hapus riwayat git bawaan agar tidak bentrok
+          rm -rf .git
+          
+          # Buat git baru khusus untuk push ke Hugging Face
+          git init
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          # Aktifkan Git LFS untuk file biner yang bikin error
+          git lfs install
+          git lfs track "*.png" "*.jpg" "*.jpeg" "*.zip" "*.ttf" "*.mp4"
+          
+          # Simpan dan paksa push ke Space kamu
+          git add .
+          git commit -m "Auto-sync via GitHub Actions"
           git push --force https://raffxs:$HF_TOKEN@huggingface.co/spaces/raffxs/brat main
