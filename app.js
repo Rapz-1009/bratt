@@ -20,7 +20,7 @@ const launchBrowser = async () => {
 
 launchBrowser();
 
-// Fungsi buat BACA data aja (gak nambah hit pas web di refresh)
+// Fungsi buat BACAambah hit pas web di refresh)
 async function getCount() {
   try {
     return (await axios.get("https://api.counterapi.dev/v1/raffxs/brat")).data?.count || 0;
