@@ -12,7 +12,6 @@ const PORT = process.env.PORT || 3000;
 
 app.use(morgan('common'));
 
-// Buat browser instance
 let browser;
 
 const launchBrowser = async () => {
